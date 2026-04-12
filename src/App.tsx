@@ -72,7 +72,9 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
       }
     };
     fetchRepos();
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, [repos.length]);
 
   // Performance: Memoize static skills list
@@ -145,7 +147,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
               Olá, eu sou <br />
               <span className="highlight leading-tight">Gabriel Borges</span>.
             </h1>
-            <p className="text-xl text-white/70 mb-10 max-w-2xl">
+            <p className="text-xl text-white/70 mb-10 max-w-2xl text-pretty">
               Desenvolvedor Full-Stack | Desenvolvedor de Games | Entusiasta de
               Tecnologia. Criando experiências digitais rápidas, acessíveis e
               imersivas.
@@ -165,7 +167,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
                   href="https://github.com/gabrielborgesweb"
                   target="_blank"
                   aria-label="GitHub de Gabriel Borges"
-                  className="w-12 h-12 flex items-center justify-center glass transition-all"
+                  className="w-12 h-12 flex items-center justify-center glass transition-all rounded-lg"
                 >
                   <Github size={24} />
                 </motion.a>
@@ -174,7 +176,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
                   href="https://www.linkedin.com/in/gabrielborges-sc/"
                   target="_blank"
                   aria-label="LinkedIn de Gabriel Borges"
-                  className="w-12 h-12 flex items-center justify-center glass transition-all"
+                  className="w-12 h-12 flex items-center justify-center glass transition-all rounded-lg"
                 >
                   <Linkedin size={24} />
                 </motion.a>
@@ -202,7 +204,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
       <motion.section {...fadeIn} id="about" className="py-24 container">
         <h2 className="text-4xl font-black mb-12 text-center">Sobre Mim</h2>
         <div className="grid md:grid-cols-5 gap-12 items-center">
-          <div className="md:col-span-3 text-lg text-white/80 space-y-6">
+          <div className="md:col-span-3 text-lg text-white/80 space-y-6 text-pretty">
             <p>
               Sou um desenvolvedor brasileiro de 24 anos apaixonado por criar
               aplicações web modernas e experiências imersivas em jogos.
@@ -295,7 +297,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
         className="py-24 container text-center"
       >
         <h2 className="text-4xl font-black mb-6">Vamos nos Conectar</h2>
-        <p className="text-white/70 mb-12 max-w-xl mx-auto">
+        <p className="text-white/70 mb-12 max-w-xl mx-auto text-pretty">
           Sinta-se à vontade para entrar em contato para colaborações ou apenas
           um papo amigável!
         </p>
@@ -328,11 +330,9 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
       </motion.section>
 
       <footer className="py-12 border-t border-glass-border text-center text-white/40 text-sm">
-        <div className="container">
-          <p>
-            &copy; {new Date().getFullYear()} Gabriel Borges. Criado com React,
-            Tailwind v4 & Lucide.
-          </p>
+        <div className="container flex flex-col gap-2">
+          <p>&copy; {new Date().getFullYear()} Gabriel Borges</p>
+          <p>Criado com React, Tailwind v4 & Lucide.</p>
         </div>
       </footer>
     </div>
@@ -369,9 +369,8 @@ const RepoCard = React.memo(({ repo }: { repo: Repo }) => (
       </div>
     </div>
     <h3 className="text-xl font-bold mb-3">{repo.name}</h3>
-    <p className="text-white/60 text-sm mb-6 flex-grow">
-      {repo.description ||
-        "Sem descrição disponível para este projeto."}
+    <p className="text-white/60 text-sm mb-6 flex-grow text-pretty">
+      {repo.description || "Sem descrição disponível para este projeto."}
     </p>
     <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/40">
       <span className="flex items-center gap-1">
