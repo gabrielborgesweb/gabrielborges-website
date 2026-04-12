@@ -135,18 +135,20 @@ const App: React.FC = () => {
                 Ver Projetos <ChevronRight size={20} />
               </motion.a>
               <div className="flex gap-4">
-                <motion.a
+                <motion.a 
                   whileHover={{ y: -5, color: "#00d2ff" }}
-                  href="https://github.com/gabrielborgesweb"
-                  target="_blank"
+                  href="https://github.com/gabrielborgesweb" 
+                  target="_blank" 
+                  aria-label="GitHub de Gabriel Borges"
                   className="w-12 h-12 flex items-center justify-center glass transition-all"
                 >
                   <Github size={24} />
                 </motion.a>
-                <motion.a
+                <motion.a 
                   whileHover={{ y: -5, color: "#00d2ff" }}
-                  href="https://www.linkedin.com/in/gabrielborges-sc/"
-                  target="_blank"
+                  href="https://www.linkedin.com/in/gabrielborges-sc/" 
+                  target="_blank" 
+                  aria-label="LinkedIn de Gabriel Borges"
                   className="w-12 h-12 flex items-center justify-center glass transition-all"
                 >
                   <Linkedin size={24} />
