@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #050505;
+  --color-accent: #00d2ff;
+  --color-secondary: #3a7bd5;
+  --color-glass: rgba(255, 255, 255, 0.05);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+
+  --font-inter: "Inter", sans-serif;
+
+  --spacing-container: 1000px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg text-white font-inter overflow-x-hidden;
+  }
+
+  .container {
+    @apply mx-auto px-6;
+    max-width: var(--spacing-container);
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-glass backdrop-blur-md border border-glass-border rounded-2xl shadow-2xl;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-secondary to-accent text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center transition-all hover:scale-105 hover:shadow-[0_10px_20px_rgba(0,210,255,0.3)];
+  }
+
+  .btn-secondary {
+    @apply border border-glass-border bg-glass text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center transition-all hover:bg-white/10;
+  }
+
+  .highlight {
+    @apply bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent font-extrabold;
+  }
+}
+
+/* Custom Background Blobs */
+.blob {
+  @apply absolute rounded-full blur-[80px] opacity-40 z-[-1];
+}
+
+@keyframes morph {
+  0% {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+  50% {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+  }
+  100% {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+}
+
+.animate-morph {
+  animation: morph 8s ease-in-out infinite;
+}
