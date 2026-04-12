@@ -43,12 +43,27 @@ async function prerender() {
     React.createElement(App, { initialRepos })
   );
 
-  // 3. Injetar no Template
-  // Removemos o pre-loader e injetamos o HTML real dentro do #root
-  const finalHtml = template.replace(
-    /<div id="root">[\s\S]*?<\/div>/,
-    `<div id="root">${appHtml}</div>`
-  );
+  // 3. Injetar no Template de forma robusta
+  console.log('Injetando HTML no template...');
+  
+  const rootStartTag = '<div id="root">';
+  const bodyEndTag = '</body>';
+  
+  const startIndex = template.indexOf(rootStartTag);
+  const bodyEndIndex = template.indexOf(bodyEndTag);
+  // Procuramos o último </div> antes do fechamento do body, que deve ser o fechamento do #root
+  const endIndex = template.lastIndexOf('</div>', bodyEndIndex);
+
+  if (startIndex === -1 || endIndex === -1 || endIndex <= startIndex) {
+    console.error('❌ Erro: Não foi possível encontrar a estrutura do <div id="root"> no template.');
+    console.log('StartIndex:', startIndex, 'EndIndex:', endIndex, 'BodyEndIndex:', bodyEndIndex);
+    process.exit(1);
+  }
+
+  const finalHtml = 
+    template.substring(0, startIndex) + 
+    `<div id="root">${appHtml}</div>` + 
+    template.substring(endIndex + 6); // 6 é o tamanho de '</div>'
 
   fs.writeFileSync(templatePath, finalHtml);
   console.log('✅ Prerender concluído com sucesso! dist/index.html agora contém o HTML real.');
