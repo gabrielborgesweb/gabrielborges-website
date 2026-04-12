@@ -36,11 +36,21 @@ const staggerContainer = {
   whileInView: { transition: { staggerChildren: 0.05 } }, // Faster stagger for better responsiveness
 };
 
-const App: React.FC = () => {
-  const [repos, setRepos] = useState<Repo[]>([]);
-  const [loading, setLoading] = useState(true);
+interface AppProps {
+  initialRepos?: Repo[];
+}
+
+const App: React.FC<AppProps> = ({ initialRepos }) => {
+  const [repos, setRepos] = useState<Repo[]>(initialRepos || []);
+  const [loading, setLoading] = useState(!initialRepos);
 
   useEffect(() => {
+    // Só faz o fetch se não tivermos repositórios iniciais (SSG)
+    if (repos.length > 0) {
+      setLoading(false);
+      return;
+    }
+
     let isMounted = true;
     const fetchRepos = async () => {
       try {
@@ -62,10 +72,8 @@ const App: React.FC = () => {
       }
     };
     fetchRepos();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+    return () => { isMounted = false; };
+  }, [repos.length]);
 
   // Performance: Memoize static skills list
   const skills = useMemo(
@@ -261,7 +269,7 @@ const App: React.FC = () => {
         >
           Projetos
         </motion.h2>
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={!initialRepos}>
           {loading ? (
             <motion.div
               key="loader"
