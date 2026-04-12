@@ -48,6 +48,8 @@
 /* Custom Background Blobs */
 .blob {
   @apply absolute rounded-full blur-[80px] opacity-40 z-[-1];
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Force GPU acceleration */
 }
 
 @keyframes morph {
@@ -64,4 +66,6 @@
 
 .animate-morph {
   animation: morph 8s ease-in-out infinite;
+  will-change: border-radius;
+  transform: translateZ(0);
 }
