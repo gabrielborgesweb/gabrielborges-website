@@ -17,6 +17,13 @@
     scroll-behavior: smooth;
   }
 
+  /* Optimize for users who prefer reduced motion or have slower hardware */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto !important;
+    }
+  }
+
   body {
     @apply bg-bg text-white font-inter overflow-x-hidden;
   }
@@ -25,6 +32,19 @@
     @apply mx-auto px-6;
     max-width: var(--spacing-container);
   }
+}
+
+/* Fallback for low performance devices */
+.low-perf .blob,
+.low-perf .animate-morph {
+  animation: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+}
+
+.low-perf .glass {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: none !important;
 }
 
 @layer components {

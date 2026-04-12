@@ -43,6 +43,50 @@ interface AppProps {
 const App: React.FC<AppProps> = ({ initialRepos }) => {
   const [repos, setRepos] = useState<Repo[]>(initialRepos || []);
   const [loading, setLoading] = useState(!initialRepos);
+  const [isLowPerf, setIsLowPerf] = useState(false);
+
+  useEffect(() => {
+    // 1. Initial Hardware Check
+    const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory || 8;
+    const cpuCores = navigator.hardwareConcurrency || 4;
+    
+    if (memory < 4 || cpuCores < 4) {
+      setIsLowPerf(true);
+      return;
+    }
+
+    // 2. Real-time FPS Monitoring
+    let frameCount = 0;
+    let startTime = performance.now();
+    let lowFpsCount = 0;
+    let animationFrameId: number;
+
+    const checkPerformance = (time: number) => {
+      frameCount++;
+      
+      if (time - startTime >= 1000) {
+        const fps = Math.round((frameCount * 1000) / (time - startTime));
+        
+        // If FPS is consistently low (< 40) for 3 checks
+        if (fps < 40) {
+          lowFpsCount++;
+          if (lowFpsCount >= 3) {
+            setIsLowPerf(true);
+            return; // Stop monitoring once triggered
+          }
+        } else {
+          lowFpsCount = 0;
+        }
+
+        frameCount = 0;
+        startTime = time;
+      }
+      animationFrameId = requestAnimationFrame(checkPerformance);
+    };
+
+    animationFrameId = requestAnimationFrame(checkPerformance);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
 
   useEffect(() => {
     // Só faz o fetch se não tivermos repositórios iniciais (SSG)
@@ -94,7 +138,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
   );
 
   return (
-    <div className="min-h-screen relative selection:bg-accent selection:text-bg">
+    <div className={`min-h-screen relative selection:bg-accent selection:text-bg ${isLowPerf ? "low-perf" : ""}`}>
       {/* 
           Performance Optimization: Static Background
           Removed blurred animating divs which cause heavy layout/paint cycles.

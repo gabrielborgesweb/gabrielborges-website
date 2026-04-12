@@ -19,17 +19,29 @@ async function prerender() {
     process.exit(1);
   }
 
-  let template = fs.readFileSync(templatePath, 'utf-8');
+  const template = fs.readFileSync(templatePath, 'utf-8');
 
   // 1. Buscar dados do GitHub durante a Build
   console.log('📡 Buscando repositórios do GitHub...');
-  let initialRepos = [];
+  
+  interface GithubRepo {
+    id: number;
+    name: string;
+    description: string;
+    html_url: string;
+    homepage: string;
+    stargazers_count: number;
+    language: string;
+    fork: boolean;
+  }
+
+  let initialRepos: GithubRepo[] = [];
   try {
     const response = await fetch('https://api.github.com/users/gabrielborgesweb/repos?sort=updated&per_page=15');
     const data = await response.json();
     if (Array.isArray(data)) {
       initialRepos = data
-        .filter((repo: any) => !repo.fork)
+        .filter((repo: GithubRepo) => !repo.fork)
         .sort((a, b) => b.stargazers_count - a.stargazers_count)
         .slice(0, 6);
     }
