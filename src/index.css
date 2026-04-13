@@ -34,7 +34,7 @@
   }
 
   body {
-    @apply bg-bg text-text font-inter overflow-x-hidden transition-colors duration-300;
+    @apply bg-bg text-text font-inter overflow-x-hidden  duration-300;
   }
 
   .container {
@@ -63,11 +63,11 @@
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-secondary to-accent text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center dark:hover:shadow-[0_10px_20px_rgba(0,210,255,0.3)];
+    @apply bg-gradient-to-r from-secondary to-accent text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center transition-shadow dark:hover:shadow-[0_10px_20px_rgba(0,210,255,0.3)];
   }
 
   .btn-secondary {
-    @apply border border-glass-border bg-glass text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center hover:bg-white/10;
+    @apply border border-glass-border bg-glass text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center transition-colors hover:bg-white/10;
   }
 
   .highlight {

@@ -85,7 +85,7 @@ const Projects: React.FC<ProjectsProps> = ({
         className="mt-16 text-center"
       >
         <motion.a
-          whileHover={{ scale: 1.02 }}
+          whileHover={{ y: -3 }}
           whileTap={{ scale: 0.98 }}
           href="https://github.com/gabrielborgesweb"
           target="_blank"

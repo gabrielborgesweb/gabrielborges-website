@@ -233,7 +233,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
                   aria-label="GitHub de Gabriel Borges"
                   className="w-12 h-12 flex items-center justify-center glass rounded-lg"
                 >
-                  <Github size={24} />
+                  <Github size={20} />
                 </motion.a>
                 <motion.a
                   whileHover={{ y: -3 }}
@@ -244,7 +244,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
                   aria-label="LinkedIn de Gabriel Borges"
                   className="w-12 h-12 flex items-center justify-center glass rounded-lg"
                 >
-                  <Linkedin size={24} />
+                  <Linkedin size={20} />
                 </motion.a>
               </div>
             </div>
@@ -288,13 +288,13 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
             </p>
             <div className="flex flex-wrap gap-6 pt-4 justify-center lg:justify-start">
               <div className="flex items-center gap-2 text-accent">
-                <Code2 size={24} /> <span>Web Dev</span>
+                <Code2 size={20} /> <span>Web Dev</span>
               </div>
               <div className="flex items-center gap-2 text-accent">
-                <Gamepad2 size={24} /> <span>Game Dev</span>
+                <Gamepad2 size={20} /> <span>Game Dev</span>
               </div>
               <div className="flex items-center gap-2 text-accent">
-                <Cpu size={24} /> <span>Software Engineer</span>
+                <Cpu size={20} /> <span>Software Engineer</span>
               </div>
             </div>
           </div>
