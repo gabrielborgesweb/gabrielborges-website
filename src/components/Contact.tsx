@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Github, Linkedin, Mail } from "lucide-react";
 
 const fadeIn = (isLowPerf: boolean) => ({
@@ -11,18 +11,20 @@ const fadeIn = (isLowPerf: boolean) => ({
 
 const Contact: React.FC<{ isLowPerf: boolean }> = ({ isLowPerf }) => {
   return (
-    <motion.section
+    <m.section
       {...fadeIn(isLowPerf)}
       id="contact"
       className="py-24 container text-center"
     >
-      <h2 className="text-4xl font-black mb-6">Vamos nos Conectar</h2>
+      <h2 className="text-3xl md:text-4xl font-black mb-6">
+        Vamos nos Conectar
+      </h2>
       <p className="text-text/70 mb-12 max-w-md mx-auto text-pretty">
         Sinta-se à vontade para entrar em contato para colaborações ou apenas um
         papo amigável!
       </p>
       <div className="grid sm:grid-cols-3 gap-6 mx-auto">
-        <motion.a
+        <m.a
           whileHover={
             isLowPerf
               ? {}
@@ -39,8 +41,8 @@ const Contact: React.FC<{ isLowPerf: boolean }> = ({ isLowPerf }) => {
         >
           <Github size={20} className="text-accent" />
           <span className="font-bold">GitHub</span>
-        </motion.a>
-        <motion.a
+        </m.a>
+        <m.a
           whileHover={
             isLowPerf
               ? {}
@@ -57,8 +59,8 @@ const Contact: React.FC<{ isLowPerf: boolean }> = ({ isLowPerf }) => {
         >
           <Linkedin size={20} className="text-accent" />
           <span className="font-bold">LinkedIn</span>
-        </motion.a>
-        <motion.a
+        </m.a>
+        <m.a
           whileHover={
             isLowPerf
               ? {}
@@ -74,9 +76,9 @@ const Contact: React.FC<{ isLowPerf: boolean }> = ({ isLowPerf }) => {
         >
           <Mail size={20} className="text-accent" />
           <span className="font-bold">E-mail</span>
-        </motion.a>
+        </m.a>
       </div>
-    </motion.section>
+    </m.section>
   );
 };
 

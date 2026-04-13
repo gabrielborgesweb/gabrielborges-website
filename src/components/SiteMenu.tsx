@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Menu, X, Github, Linkedin, Mail } from "lucide-react";
 import { Logo } from "../App";
 
@@ -99,7 +99,7 @@ const SiteMenu: React.FC<SiteMenuProps> = ({ isLowPerf, onOpenChange }) => {
         {isOpen && (
           <>
             {/* Backdrop */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -108,7 +108,7 @@ const SiteMenu: React.FC<SiteMenuProps> = ({ isLowPerf, onOpenChange }) => {
             />
 
             {/* Sidebar Content */}
-            <motion.div
+            <m.div
               variants={menuVariants}
               initial="closed"
               animate="opened"
@@ -128,7 +128,7 @@ const SiteMenu: React.FC<SiteMenuProps> = ({ isLowPerf, onOpenChange }) => {
 
               <nav className="flex flex-col gap-8">
                 {navLinks.map((link) => (
-                  <motion.a
+                  <m.a
                     key={link.name}
                     variants={itemVariants}
                     href={link.href}
@@ -136,7 +136,7 @@ const SiteMenu: React.FC<SiteMenuProps> = ({ isLowPerf, onOpenChange }) => {
                     className="text-2xl font-bold hover:text-accent transition-colors"
                   >
                     {link.name}
-                  </motion.a>
+                  </m.a>
                 ))}
               </nav>
 
@@ -170,7 +170,7 @@ const SiteMenu: React.FC<SiteMenuProps> = ({ isLowPerf, onOpenChange }) => {
                   &copy; {new Date().getFullYear()} Gabriel Borges
                 </p>
               </div>
-            </motion.div>
+            </m.div>
           </>
         )}
       </AnimatePresence>

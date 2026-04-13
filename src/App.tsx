@@ -6,8 +6,9 @@ import {
   Gamepad2,
   Cpu,
   ChevronRight,
+  ChevronDown,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 import SiteMenu from "./components/SiteMenu";
 
 // Lazy loading components for off-screen sections
@@ -24,13 +25,6 @@ interface Repo {
   language: string;
   fork: boolean;
 }
-
-const fadeIn = (isLowPerf: boolean) => ({
-  initial: isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-20px" },
-  transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
-});
 
 export const Logo = () => (
   <svg
@@ -151,182 +145,198 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
   );
 
   return (
-    <div
-      className={`min-h-screen relative selection:bg-accent selection:text-bg ${isLowPerf ? "low-perf" : ""}`}
-    >
-      <div className="fixed inset-0 pointer-events-none -z-10 bg-bg">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
+    <LazyMotion features={domAnimation}>
+      <div
+        className={`min-h-screen relative selection:bg-accent selection:text-bg ${isLowPerf ? "low-perf" : ""}`}
+      >
+        <div className="fixed inset-0 pointer-events-none -z-10 bg-bg">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
+        </div>
+
+        <nav
+          className={`fixed top-0 w-full z-50 border-b border-glass-border ${isMenuOpen ? "bg-bg/0 border-transparent" : "backdrop-blur-md"}`}
+        >
+          <div className="container flex justify-between items-center py-4">
+            <m.a
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              href="#"
+              className="flex items-center gap-2"
+            >
+              <Logo />
+            </m.a>
+            <SiteMenu isLowPerf={isLowPerf} onOpenChange={setIsMenuOpen} />
+          </div>
+        </nav>
+
+        <header className="pt-48 pb-24 container overflow-hidden">
+          <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
+            <m.div
+              initial={isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="flex-1 text-center lg:text-left"
+            >
+              <h1 className="text-4xl md:text-7xl font-black mb-6">
+                Olá, eu sou <br />
+                <span className="highlight leading-tight">Gabriel Borges</span>.
+              </h1>
+              <div className="flex flex-wrap gap-2 mb-6 justify-center lg:justify-start">
+                {[
+                  "Desenvolvedor Full-Stack",
+                  "Desenvolvedor de Games",
+                  "Entusiasta de Tecnologia",
+                ].map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1 bg-accent/10 border border-accent/20 text-accent rounded-full text-sm font-semibold"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <p className="text-xl text-text/70 mb-10 max-w-2xl text-pretty mx-auto lg:mx-0">
+                Criando experiências digitais rápidas, acessíveis e imersivas.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start">
+                <m.a
+                  whileHover={{ y: -3 }}
+                  whileTap={{ scale: 0.98 }}
+                  href="#projects"
+                  className="btn-primary flex items-center gap-2"
+                >
+                  {/* Ver Projetos <ChevronRight size={20} /> */}
+                  <span>Ver Projetos</span>
+                  <ChevronRight
+                    size={20}
+                    className="hidden sm:block mr-[-10px]"
+                  />
+                  <ChevronDown size={20} className="sm:hidden mr-[-10px]" />
+                </m.a>
+                <div className="flex gap-4">
+                  <m.a
+                    whileHover={{ y: -3 }}
+                    whileTap={{ scale: 0.98 }}
+                    href="https://github.com/gabrielborgesweb"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="GitHub de Gabriel Borges"
+                    className="w-12 h-12 flex items-center justify-center glass rounded-lg"
+                  >
+                    <Github size={20} />
+                  </m.a>
+                  <m.a
+                    whileHover={{ y: -3 }}
+                    whileTap={{ scale: 0.98 }}
+                    href="https://www.linkedin.com/in/gabrielborges-sc/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn de Gabriel Borges"
+                    className="w-12 h-12 flex items-center justify-center glass rounded-lg"
+                  >
+                    <Linkedin size={20} />
+                  </m.a>
+                </div>
+              </div>
+            </m.div>
+            <m.div
+              initial={
+                isLowPerf
+                  ? { opacity: 1, scale: 1 }
+                  : { opacity: 0, scale: 0.95 }
+              }
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
+              className="w-64 h-64 md:w-80 md:h-80 relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-tr from-accent to-secondary animate-morph -z-10 opacity-30 blur-lg" />
+              <img
+                src="https://github.com/gabrielborgesweb.png"
+                alt="Gabriel Borges"
+                className="w-full h-full object-cover animate-morph border-2 border-glass-border shadow-2xl"
+                loading="eager"
+                fetchPriority="high"
+              />
+            </m.div>
+          </div>
+        </header>
+
+        <m.section
+          initial={isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-20px" }}
+          transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+          id="about"
+          className="py-24 container"
+        >
+          <h2 className="text-3xl md:text-4xl font-black mb-12 text-center">
+            Sobre Mim
+          </h2>
+          <div className="grid lg:grid-cols-5 gap-12 items-center">
+            <div className="lg:col-span-3 text-lg text-text/80 space-y-6 text-pretty text-center lg:text-left">
+              <p>
+                Sou um desenvolvedor brasileiro de 24 anos apaixonado por criar
+                aplicações web modernas e experiências imersivas em jogos.
+              </p>
+              <p>
+                Com foco em Desenvolvimento Web e interesse em performance de
+                baixo nível, exploro tecnologias como
+                <strong> Rust</strong>, <strong>Tauri</strong>,{" "}
+                <strong>Godot Engine</strong> e <strong>TypeScript</strong>.
+              </p>
+              <div className="flex flex-wrap gap-6 pt-4 justify-center lg:justify-start">
+                <div className="flex items-center gap-2 text-accent">
+                  <Code2 size={20} /> <span>Web Dev</span>
+                </div>
+                <div className="flex items-center gap-2 text-accent">
+                  <Gamepad2 size={20} /> <span>Game Dev</span>
+                </div>
+                <div className="flex items-center gap-2 text-accent">
+                  <Cpu size={20} /> <span>Software Engineer</span>
+                </div>
+              </div>
+            </div>
+            <div className="lg:col-span-2 glass p-8 text-center lg:text-left">
+              <h3 className="text-xl font-bold mb-6">Habilidades Técnicas</h3>
+              <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+                {skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1 bg-accent/10 border border-accent/20 text-accent rounded-full text-sm font-semibold"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </m.section>
+
+        <Suspense
+          fallback={
+            <div className="py-24 text-center text-text/50">
+              Carregando seção...
+            </div>
+          }
+        >
+          <Projects
+            repos={repos}
+            loading={loading}
+            initialRepos={initialRepos}
+            isLowPerf={isLowPerf}
+          />
+          <Contact isLowPerf={isLowPerf} />
+        </Suspense>
+
+        <footer className="py-12 border-t border-glass-border text-center text-text/40 text-sm">
+          <div className="container flex flex-col gap-2">
+            <p>&copy; {new Date().getFullYear()} Gabriel Borges</p>
+            <p>Criado com React, Tailwind v4 & Lucide.</p>
+          </div>
+        </footer>
       </div>
-
-      <nav
-        className={`fixed top-0 w-full z-50 border-b border-glass-border ${isMenuOpen ? "bg-bg/0 border-transparent" : "backdrop-blur-md"}`}
-      >
-        <div className="container flex justify-between items-center py-4">
-          <motion.a
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            href="#"
-            className="flex items-center gap-2"
-          >
-            <Logo />
-          </motion.a>
-          <SiteMenu isLowPerf={isLowPerf} onOpenChange={setIsMenuOpen} />
-        </div>
-      </nav>
-
-      <header className="pt-48 pb-24 container overflow-hidden">
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
-          <motion.div
-            initial={isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="flex-1 text-center lg:text-left"
-          >
-            <h1 className="text-5xl md:text-7xl font-black mb-6">
-              Olá, eu sou <br />
-              <span className="highlight leading-tight">Gabriel Borges</span>.
-            </h1>
-            <div className="flex flex-wrap gap-2 mb-6 justify-center lg:justify-start">
-              {[
-                "Desenvolvedor Full-Stack",
-                "Desenvolvedor de Games",
-                "Entusiasta de Tecnologia",
-              ].map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 bg-accent/10 border border-accent/20 text-accent rounded-full text-sm font-semibold"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <p className="text-xl text-text/70 mb-10 max-w-2xl text-pretty mx-auto lg:mx-0">
-              Criando experiências digitais rápidas, acessíveis e imersivas.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start">
-              <motion.a
-                whileHover={{ y: -3 }}
-                whileTap={{ scale: 0.98 }}
-                href="#projects"
-                className="btn-primary flex items-center gap-2"
-              >
-                Ver Projetos <ChevronRight size={20} />
-              </motion.a>
-              <div className="flex gap-4">
-                <motion.a
-                  whileHover={{ y: -3 }}
-                  whileTap={{ scale: 0.98 }}
-                  href="https://github.com/gabrielborgesweb"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="GitHub de Gabriel Borges"
-                  className="w-12 h-12 flex items-center justify-center glass rounded-lg"
-                >
-                  <Github size={20} />
-                </motion.a>
-                <motion.a
-                  whileHover={{ y: -3 }}
-                  whileTap={{ scale: 0.98 }}
-                  href="https://www.linkedin.com/in/gabrielborges-sc/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn de Gabriel Borges"
-                  className="w-12 h-12 flex items-center justify-center glass rounded-lg"
-                >
-                  <Linkedin size={20} />
-                </motion.a>
-              </div>
-            </div>
-          </motion.div>
-          <motion.div
-            initial={
-              isLowPerf ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }
-            }
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4 }}
-            className="w-64 h-64 md:w-80 md:h-80 relative"
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-accent to-secondary animate-morph -z-10 opacity-30 blur-lg" />
-            <img
-              src="https://github.com/gabrielborgesweb.png"
-              alt="Gabriel Borges"
-              className="w-full h-full object-cover animate-morph border-2 border-glass-border shadow-2xl"
-              loading="eager"
-            />
-          </motion.div>
-        </div>
-      </header>
-
-      <motion.section
-        {...fadeIn(isLowPerf)}
-        id="about"
-        className="py-24 container"
-      >
-        <h2 className="text-4xl font-black mb-12 text-center">Sobre Mim</h2>
-        <div className="grid lg:grid-cols-5 gap-12 items-center">
-          <div className="lg:col-span-3 text-lg text-text/80 space-y-6 text-pretty text-center lg:text-left">
-            <p>
-              Sou um desenvolvedor brasileiro de 24 anos apaixonado por criar
-              aplicações web modernas e experiências imersivas em jogos.
-            </p>
-            <p>
-              Com foco em Desenvolvimento Web e interesse em performance de
-              baixo nível, exploro tecnologias como
-              <strong> Rust</strong>, <strong>Tauri</strong>,{" "}
-              <strong>Godot Engine</strong> e <strong>TypeScript</strong>.
-            </p>
-            <div className="flex flex-wrap gap-6 pt-4 justify-center lg:justify-start">
-              <div className="flex items-center gap-2 text-accent">
-                <Code2 size={20} /> <span>Web Dev</span>
-              </div>
-              <div className="flex items-center gap-2 text-accent">
-                <Gamepad2 size={20} /> <span>Game Dev</span>
-              </div>
-              <div className="flex items-center gap-2 text-accent">
-                <Cpu size={20} /> <span>Software Engineer</span>
-              </div>
-            </div>
-          </div>
-          <div className="lg:col-span-2 glass p-8 text-center lg:text-left">
-            <h3 className="text-xl font-bold mb-6">Habilidades Técnicas</h3>
-            <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
-              {skills.map((skill) => (
-                <span
-                  key={skill}
-                  className="px-3 py-1 bg-accent/10 border border-accent/20 text-accent rounded-full text-sm font-semibold"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </motion.section>
-
-      <Suspense
-        fallback={
-          <div className="py-24 text-center text-text/50">
-            Carregando seção...
-          </div>
-        }
-      >
-        <Projects
-          repos={repos}
-          loading={loading}
-          initialRepos={initialRepos}
-          isLowPerf={isLowPerf}
-        />
-        <Contact isLowPerf={isLowPerf} />
-      </Suspense>
-
-      <footer className="py-12 border-t border-glass-border text-center text-text/40 text-sm">
-        <div className="container flex flex-col gap-2">
-          <p>&copy; {new Date().getFullYear()} Gabriel Borges</p>
-          <p>Criado com React, Tailwind v4 & Lucide.</p>
-        </div>
-      </footer>
-    </div>
+    </LazyMotion>
   );
 };
 

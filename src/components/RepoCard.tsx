@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Github, ExternalLink, Folder, Star } from "lucide-react";
 
 interface Repo {
@@ -21,7 +21,7 @@ const fadeIn = (isLowPerf: boolean) => ({
 
 const RepoCard = React.memo(
   ({ repo, isLowPerf }: { repo: Repo; isLowPerf: boolean }) => (
-    <motion.div
+    <m.div
       variants={fadeIn(isLowPerf)}
       whileHover={isLowPerf ? {} : { y: -5, transition: { duration: 0.2 } }}
       className="glass p-8 flex flex-col hover:shadow-xl dark:hover:shadow-accent/5"
@@ -64,7 +64,7 @@ const RepoCard = React.memo(
           <Star size={14} /> {repo.stargazers_count}
         </span>
       </div>
-    </motion.div>
+    </m.div>
   ),
 );
 

@@ -1,6 +1,7 @@
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import RepoCard from "./RepoCard";
+import { ExternalLink } from "lucide-react";
 
 interface Repo {
   id: number;
@@ -44,18 +45,18 @@ const Projects: React.FC<ProjectsProps> = ({
 }) => {
   return (
     <section id="projects" className="py-24 container">
-      <motion.h2
+      <m.h2
         initial={isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.4 }}
-        className="text-4xl font-black mb-12 text-center"
+        className="text-3xl md:text-4xl font-black mb-12 text-center"
       >
         Projetos
-      </motion.h2>
+      </m.h2>
       <AnimatePresence mode="wait" initial={!initialRepos}>
         {loading ? (
-          <motion.div
+          <m.div
             key="loader"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -63,9 +64,9 @@ const Projects: React.FC<ProjectsProps> = ({
             className="text-center py-20 text-text/50 italic"
           >
             Carregando projetos recentes...
-          </motion.div>
+          </m.div>
         ) : (
-          <motion.div
+          <m.div
             key="grid"
             variants={staggerContainer(isLowPerf)}
             initial="initial"
@@ -76,25 +77,26 @@ const Projects: React.FC<ProjectsProps> = ({
             {repos.map((repo) => (
               <RepoCard key={repo.id} repo={repo} isLowPerf={isLowPerf} />
             ))}
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
-      <motion.div
+      <m.div
         {...fadeIn(isLowPerf)}
         viewport={{ once: true }}
         className="mt-16 text-center"
       >
-        <motion.a
+        <m.a
           whileHover={{ y: -3 }}
           whileTap={{ scale: 0.98 }}
           href="https://github.com/gabrielborgesweb"
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-secondary text-text w-fit m-auto"
+          className="btn-secondary text-text w-fit m-auto gap-2"
         >
-          Ver tudo no GitHub
-        </motion.a>
-      </motion.div>
+          <span>Ver tudo no GitHub</span>
+          <ExternalLink size={20} />
+        </m.a>
+      </m.div>
     </section>
   );
 };
