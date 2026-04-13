@@ -8,6 +8,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import SiteMenu from "./components/SiteMenu";
 
 // Lazy loading components for off-screen sections
 const Projects = lazy(() => import("./components/Projects"));
@@ -31,7 +32,7 @@ const fadeIn = (isLowPerf: boolean) => ({
   transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
 });
 
-const Logo = () => (
+export const Logo = () => (
   <svg
     viewBox="0 0 256 256"
     className="w-10 h-10"
@@ -57,6 +58,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
   const [repos, setRepos] = useState<Repo[]>(initialRepos || []);
   const [loading, setLoading] = useState(!initialRepos);
   const [isLowPerf, setIsLowPerf] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     // 1. Initial Hardware Check
@@ -157,7 +159,9 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
       </div>
 
-      <nav className="fixed top-0 w-full z-50 border-b border-glass-border backdrop-blur-md">
+      <nav
+        className={`fixed top-0 w-full z-50 border-b border-glass-border ${isMenuOpen ? "bg-bg/0 border-transparent" : "backdrop-blur-md"}`}
+      >
         <div className="container flex justify-between items-center py-4">
           <motion.a
             initial={{ opacity: 0 }}
@@ -167,21 +171,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
           >
             <Logo />
           </motion.a>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="hidden md:flex gap-8 font-medium"
-          >
-            <a href="#about" className="hover:text-accent transition-colors">
-              Sobre
-            </a>
-            <a href="#projects" className="hover:text-accent transition-colors">
-              Projetos
-            </a>
-            <a href="#contact" className="hover:text-accent transition-colors">
-              Contato
-            </a>
-          </motion.div>
+          <SiteMenu isLowPerf={isLowPerf} onOpenChange={setIsMenuOpen} />
         </div>
       </nav>
 
