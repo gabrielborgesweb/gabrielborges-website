@@ -135,7 +135,10 @@ const SiteMenu: React.FC<SiteMenuProps> = ({ isLowPerf, onOpenChange }) => {
                     onClick={() => setIsOpen(false)}
                     className="text-2xl font-bold hover:text-accent transition-colors"
                   >
-                    {link.name}
+                    <span className="relative group">
+                      {link.name}
+                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full" />
+                    </span>
                   </m.a>
                 ))}
               </nav>
