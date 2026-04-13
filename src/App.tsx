@@ -131,15 +131,14 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
 
   const skills = useMemo(
     () => [
-      "TypeScript",
-      "Rust",
       "JavaScript",
       "Python",
       "GDScript",
-      "Tauri",
-      "Godot",
-      "Node.js",
+      "Electron",
+      "Postgres",
+      "PHP",
       "React",
+      "Gemini CLI",
     ],
     [],
   );
@@ -281,9 +280,9 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
               </p>
               <p>
                 Com foco em Desenvolvimento Web e interesse em performance de
-                baixo nível, exploro tecnologias como
-                <strong> Rust</strong>, <strong>Tauri</strong>,{" "}
-                <strong>Godot Engine</strong> e <strong>TypeScript</strong>.
+                baixo nível, exploro tecnologias como{" "}
+                <strong>JavaScript</strong>, <strong>Electron</strong>,{" "}
+                <strong>Godot Engine</strong> e <strong>Python</strong>.
               </p>
               <div className="flex flex-wrap gap-6 pt-4 justify-center lg:justify-start">
                 <div className="flex items-center gap-2 text-accent">
@@ -332,7 +331,8 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
         <footer className="py-12 border-t border-glass-border text-center text-text/40 text-sm">
           <div className="container flex flex-col gap-2">
             <p>&copy; {new Date().getFullYear()} Gabriel Borges</p>
-            <p>Criado com React, Tailwind v4 & Lucide.</p>
+            <p>Criado com React, Tailwind & Lucide</p>
+            <p>Hospedado via GitHub Pages</p>
           </div>
         </footer>
       </div>

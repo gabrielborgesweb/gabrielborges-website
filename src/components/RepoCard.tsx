@@ -29,21 +29,22 @@ const RepoCard = React.memo(
       <div className="flex justify-between items-start mb-6">
         <Folder className="text-accent" size={20} />
         <div className="flex gap-4">
-          <a
+          <Github size={20} />
+          {/* <a
             href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Código Fonte"
             className="hover:text-accent transition-colors"
           >
-            <Github size={20} />
-          </a>
+          </a> */}
           {repo.homepage && (
             <a
               href={repo.homepage}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Demo ao Vivo"
+              aria-label="Demo Ao Vivo"
+              title="Demo Ao Vivo"
               className="hover:text-accent transition-colors"
             >
               <ExternalLink size={20} />
@@ -51,7 +52,18 @@ const RepoCard = React.memo(
           )}
         </div>
       </div>
-      <h3 className="text-xl font-bold mb-3">{repo.name}</h3>
+      <h3 className="text-xl font-bold mb-3">
+        <a
+          href={repo.html_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Código Fonte"
+          className="hover:text-accent transition-colors relative group"
+        >
+          {repo.name}
+          <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full" />
+        </a>
+      </h3>
       <p className="text-text/60 text-sm mb-6 flex-grow text-pretty">
         {repo.description || "Sem descrição disponível para este projeto."}
       </p>

@@ -63,7 +63,16 @@
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-secondary to-accent text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center transition-shadow dark:hover:shadow-[0_10px_20px_rgba(0,210,255,0.3)];
+    @apply bg-gradient-to-r from-secondary via-accent to-secondary text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center transition-shadow dark:hover:shadow-[0_10px_20px_rgba(0,210,255,0.3)];
+    background-size: 200% auto;
+    background-position-x: 100%;
+    transition:
+      background-position-x 300ms,
+      box-shadow 500ms;
+
+    &:hover {
+      background-position-x: 0%;
+    }
   }
 
   .btn-secondary {
@@ -71,7 +80,18 @@
   }
 
   .highlight {
-    @apply bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent font-extrabold;
+    @apply bg-gradient-to-r from-accent via-secondary to-accent bg-clip-text text-transparent font-extrabold;
+    background-size: 200% auto;
+    animation: gradient-x 5s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes gradient-x {
+  from {
+    background-position-x: 0%;
+  }
+  to {
+    background-position: 100% 50%;
   }
 }
 
