@@ -54,6 +54,10 @@ const Logo = () => (
   </svg>
 );
 
+interface AppProps {
+  initialRepos?: Repo[];
+}
+
 const App: React.FC<AppProps> = ({ initialRepos }) => {
   const [repos, setRepos] = useState<Repo[]>(initialRepos || []);
   const [loading, setLoading] = useState(!initialRepos);
