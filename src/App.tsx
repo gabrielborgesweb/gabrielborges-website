@@ -36,9 +36,23 @@ const staggerContainer = {
   whileInView: { transition: { staggerChildren: 0.05 } }, // Faster stagger for better responsiveness
 };
 
-interface AppProps {
-  initialRepos?: Repo[];
-}
+const Logo = () => (
+  <svg
+    viewBox="0 0 256 256"
+    className="w-10 h-10"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill="#fff"
+      d="m58 188.6q-17.1 0-30.1-7.3-12.9-7.3-20.1-20.8-7.3-13.4-7.3-31.9 0-19.4 7.7-32.9 7.8-13.5 20.8-20.5 13-7.1 28.8-7.1 10.4 0 19.3 3 9 2.9 15.9 8.3 7 5.5 11.1 12.9 4.3 7.3 5.2 16.1h-32.1q-0.7-3-2.3-5.3-1.6-2.4-4.1-4-2.3-1.6-5.5-2.4-3-0.9-6.8-0.9-8 0-13.7 3.9-5.6 3.7-8.6 11-2.9 7.2-2.9 17.4 0 10.3 2.8 17.6 2.8 7.4 8.4 11.3 5.5 3.9 13.8 3.9 7.3 0 12.1-2.2 4.8-2.1 7.2-6 2.5-3.9 2.5-9.2l5.5 0.7h-26.8v-22.7h52v16.2q0 16.1-6.8 27.5-6.8 11.3-18.8 17.4-11.8 6-27.2 6zm113.8-1.6h-55.2v-117.3h50.8q13.4 0 22.6 3.6 9.1 3.6 13.7 10.2 4.7 6.6 4.7 15.5 0 6.4-2.9 11.8-2.8 5.3-7.9 8.9-5 3.6-11.9 4.9v1.3q7.6 0.2 13.7 3.8 6.2 3.4 9.8 9.7 3.8 6.1 3.8 14.4 0 9.6-5 17.1-5 7.5-14.2 11.8-9.2 4.3-22 4.3zm-23.4-50.2v24.8h14.9q8 0 12-3 4.1-3.1 4.1-8.9 0-4.2-1.9-7-1.9-3-5.4-4.4-3.5-1.5-8.3-1.5zm0-42.1v22.4h13.1q4.2 0 7.3-1.3 3.2-1.3 5-3.8 1.9-2.5 1.9-6.1 0-5.4-4-8.3-3.8-2.9-9.7-2.9z"
+    />
+    <path
+      fill="#00d2ff"
+      d="m239.1 188.9q-6.9 0-11.6-4.6-4.6-4.5-4.6-11.4 0-6.8 4.6-11.4 4.7-4.6 11.6-4.6 6.9 0 11.6 4.6 4.6 4.6 4.6 11.4 0 6.9-4.6 11.4-4.7 4.6-11.6 4.6z"
+    />
+  </svg>
+);
 
 const App: React.FC<AppProps> = ({ initialRepos }) => {
   const [repos, setRepos] = useState<Repo[]>(initialRepos || []);
@@ -47,9 +61,10 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
 
   useEffect(() => {
     // 1. Initial Hardware Check
-    const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory || 8;
+    const memory =
+      (navigator as Navigator & { deviceMemory?: number }).deviceMemory || 8;
     const cpuCores = navigator.hardwareConcurrency || 4;
-    
+
     if (memory < 4 || cpuCores < 4) {
       setIsLowPerf(true);
       return;
@@ -63,10 +78,10 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
 
     const checkPerformance = (time: number) => {
       frameCount++;
-      
+
       if (time - startTime >= 1000) {
         const fps = Math.round((frameCount * 1000) / (time - startTime));
-        
+
         // If FPS is consistently low (< 40) for 3 checks
         if (fps < 40) {
           lowFpsCount++;
@@ -138,7 +153,9 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
   );
 
   return (
-    <div className={`min-h-screen relative selection:bg-accent selection:text-bg ${isLowPerf ? "low-perf" : ""}`}>
+    <div
+      className={`min-h-screen relative selection:bg-accent selection:text-bg ${isLowPerf ? "low-perf" : ""}`}
+    >
       {/* 
           Performance Optimization: Static Background
           Removed blurred animating divs which cause heavy layout/paint cycles.
@@ -156,9 +173,9 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             href="#"
-            className="text-2xl font-black"
+            className="flex items-center gap-2"
           >
-            GB<span className="text-accent">.</span>
+            <Logo />
           </motion.a>
           <motion.div
             initial={{ opacity: 0 }}
