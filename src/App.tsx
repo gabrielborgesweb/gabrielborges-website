@@ -212,10 +212,15 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
               Olá, eu sou <br />
               <span className="highlight leading-tight">Gabriel Borges</span>.
             </h1>
+            <div className="flex flex-wrap gap-2 mb-6 justify-center md:justify-start">
+              {["Desenvolvedor Full-Stack", "Desenvolvedor de Games", "Entusiasta de Tecnologia"].map((tag) => (
+                <span key={tag} className="px-3 py-1 bg-accent/10 border border-accent/20 text-accent rounded-full text-sm font-semibold">
+                  {tag}
+                </span>
+              ))}
+            </div>
             <p className="text-xl text-text/70 mb-10 max-w-2xl text-pretty">
-              Desenvolvedor Full-Stack | Desenvolvedor de Games | Entusiasta de
-              Tecnologia. Criando experiências digitais rápidas, acessíveis e
-              imersivas.
+              Criando experiências digitais rápidas, acessíveis e imersivas.
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-6 justify-center md:justify-start">
               <motion.a
@@ -362,7 +367,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
         className="py-24 container text-center"
       >
         <h2 className="text-4xl font-black mb-6">Vamos nos Conectar</h2>
-        <p className="text-text/70 mb-12 max-w-xl mx-auto text-pretty">
+        <p className="text-text/70 mb-12 max-w-md mx-auto text-pretty">
           Sinta-se à vontade para entrar em contato para colaborações ou apenas
           um papo amigável!
         </p>
