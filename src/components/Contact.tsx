@@ -2,17 +2,17 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Github, Linkedin } from "lucide-react";
 
-const fadeIn = {
-  initial: { opacity: 0, y: 15 },
+const fadeIn = (isLowPerf: boolean) => ({
+  initial: isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-50px" },
-  transition: { duration: 0.5, ease: "easeOut" },
-};
+  viewport: { once: true, margin: "-20px" },
+  transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
+});
 
-const Contact: React.FC = () => {
+const Contact: React.FC<{ isLowPerf: boolean }> = ({ isLowPerf }) => {
   return (
     <motion.section
-      {...fadeIn}
+      {...fadeIn(isLowPerf)}
       id="contact"
       className="py-24 container text-center"
     >
@@ -23,9 +23,10 @@ const Contact: React.FC = () => {
       </p>
       <div className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
         <motion.a
-          whileHover={{
+          whileHover={isLowPerf ? {} : {
             y: -5,
             backgroundColor: "rgba(255,255,255,0.08)",
+            transition: { duration: 0.2 }
           }}
           href="https://github.com/gabrielborgesweb"
           target="_blank"
@@ -36,9 +37,10 @@ const Contact: React.FC = () => {
           <span className="font-bold">GitHub</span>
         </motion.a>
         <motion.a
-          whileHover={{
+          whileHover={isLowPerf ? {} : {
             y: -5,
             backgroundColor: "rgba(255,255,255,0.08)",
+            transition: { duration: 0.2 }
           }}
           href="https://www.linkedin.com/in/gabrielborges-sc/"
           target="_blank"

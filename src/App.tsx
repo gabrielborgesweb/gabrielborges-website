@@ -24,12 +24,12 @@ interface Repo {
   fork: boolean;
 }
 
-const fadeIn = {
-  initial: { opacity: 0, y: 15 },
+const fadeIn = (isLowPerf: boolean) => ({
+  initial: isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-50px" },
-  transition: { duration: 0.5, ease: "easeOut" },
-};
+  viewport: { once: true, margin: "-20px" },
+  transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
+});
 
 const Logo = () => (
   <svg
@@ -186,18 +186,18 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
       </nav>
 
       <header className="pt-48 pb-24 container overflow-hidden">
-        <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-12">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex-1 text-center md:text-left"
+            transition={{ duration: 0.4 }}
+            className="flex-1 text-center lg:text-left"
           >
             <h1 className="text-5xl md:text-7xl font-black mb-6">
               Olá, eu sou <br />
               <span className="highlight leading-tight">Gabriel Borges</span>.
             </h1>
-            <div className="flex flex-wrap gap-2 mb-6 justify-center md:justify-start">
+            <div className="flex flex-wrap gap-2 mb-6 justify-center lg:justify-start">
               {[
                 "Desenvolvedor Full-Stack",
                 "Desenvolvedor de Games",
@@ -211,12 +211,12 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
                 </span>
               ))}
             </div>
-            <p className="text-xl text-text/70 mb-10 max-w-2xl text-pretty">
+            <p className="text-xl text-text/70 mb-10 max-w-2xl text-pretty mx-auto lg:mx-0">
               Criando experiências digitais rápidas, acessíveis e imersivas.
             </p>
-            <div className="flex flex-col sm:flex-row items-center gap-6 justify-center md:justify-start">
+            <div className="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start">
               <motion.a
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ y: -3 }}
                 whileTap={{ scale: 0.98 }}
                 href="#projects"
                 className="btn-primary flex items-center gap-2"
@@ -226,21 +226,23 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
               <div className="flex gap-4">
                 <motion.a
                   whileHover={{ y: -3 }}
+                  whileTap={{ scale: 0.98 }}
                   href="https://github.com/gabrielborgesweb"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub de Gabriel Borges"
-                  className="w-12 h-12 flex items-center justify-center glass transition-all rounded-lg"
+                  className="w-12 h-12 flex items-center justify-center glass rounded-lg"
                 >
                   <Github size={24} />
                 </motion.a>
                 <motion.a
                   whileHover={{ y: -3 }}
+                  whileTap={{ scale: 0.98 }}
                   href="https://www.linkedin.com/in/gabrielborges-sc/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn de Gabriel Borges"
-                  className="w-12 h-12 flex items-center justify-center glass transition-all rounded-lg"
+                  className="w-12 h-12 flex items-center justify-center glass rounded-lg"
                 >
                   <Linkedin size={24} />
                 </motion.a>
@@ -248,9 +250,11 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
             </div>
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={
+              isLowPerf ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }
+            }
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.4 }}
             className="w-64 h-64 md:w-80 md:h-80 relative"
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-accent to-secondary animate-morph -z-10 opacity-30 blur-lg" />
@@ -264,10 +268,14 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
         </div>
       </header>
 
-      <motion.section {...fadeIn} id="about" className="py-24 container">
+      <motion.section
+        {...fadeIn(isLowPerf)}
+        id="about"
+        className="py-24 container"
+      >
         <h2 className="text-4xl font-black mb-12 text-center">Sobre Mim</h2>
-        <div className="grid md:grid-cols-5 gap-12 items-center">
-          <div className="md:col-span-3 text-lg text-text/80 space-y-6 text-pretty">
+        <div className="grid lg:grid-cols-5 gap-12 items-center">
+          <div className="lg:col-span-3 text-lg text-text/80 space-y-6 text-pretty text-center lg:text-left">
             <p>
               Sou um desenvolvedor brasileiro de 24 anos apaixonado por criar
               aplicações web modernas e experiências imersivas em jogos.
@@ -278,7 +286,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
               <strong> Rust</strong>, <strong>Tauri</strong>,{" "}
               <strong>Godot Engine</strong> e <strong>TypeScript</strong>.
             </p>
-            <div className="flex flex-wrap gap-6 pt-4">
+            <div className="flex flex-wrap gap-6 pt-4 justify-center lg:justify-start">
               <div className="flex items-center gap-2 text-accent">
                 <Code2 size={24} /> <span>Web Dev</span>
               </div>
@@ -290,9 +298,9 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
               </div>
             </div>
           </div>
-          <div className="md:col-span-2 glass p-8">
+          <div className="lg:col-span-2 glass p-8 text-center lg:text-left">
             <h3 className="text-xl font-bold mb-6">Habilidades Técnicas</h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
               {skills.map((skill) => (
                 <span
                   key={skill}
@@ -313,8 +321,13 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
           </div>
         }
       >
-        <Projects repos={repos} loading={loading} initialRepos={initialRepos} />
-        <Contact />
+        <Projects
+          repos={repos}
+          loading={loading}
+          initialRepos={initialRepos}
+          isLowPerf={isLowPerf}
+        />
+        <Contact isLowPerf={isLowPerf} />
       </Suspense>
 
       <footer className="py-12 border-t border-glass-border text-center text-text/40 text-sm">

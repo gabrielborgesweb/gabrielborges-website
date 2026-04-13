@@ -13,29 +13,42 @@ interface Repo {
   fork: boolean;
 }
 
-const fadeIn = {
-  initial: { opacity: 0, y: 15 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-50px" },
-  transition: { duration: 0.5, ease: "easeOut" },
-};
-
-const staggerContainer = {
-  initial: {},
-  whileInView: { transition: { staggerChildren: 0.05 } },
-};
-
 interface ProjectsProps {
   repos: Repo[];
   loading: boolean;
+  isLowPerf: boolean;
   initialRepos?: Repo[];
 }
 
-const Projects: React.FC<ProjectsProps> = ({ repos, loading, initialRepos }) => {
+const fadeIn = (isLowPerf: boolean) => ({
+  initial: isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
+});
+
+const staggerContainer = (isLowPerf: boolean) => ({
+  initial: {},
+  whileInView: {
+    transition: {
+      staggerChildren: isLowPerf ? 0 : 0.05,
+      delayChildren: 0.1,
+    },
+  },
+});
+
+const Projects: React.FC<ProjectsProps> = ({
+  repos,
+  loading,
+  initialRepos,
+  isLowPerf,
+}) => {
   return (
     <section id="projects" className="py-24 container">
       <motion.h2
-        {...fadeIn}
+        initial={isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
         className="text-4xl font-black mb-12 text-center"
       >
         Projetos
@@ -54,26 +67,30 @@ const Projects: React.FC<ProjectsProps> = ({ repos, loading, initialRepos }) => 
         ) : (
           <motion.div
             key="grid"
-            variants={staggerContainer}
+            variants={staggerContainer(isLowPerf)}
             initial="initial"
             whileInView="whileInView"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {repos.map((repo) => (
-              <RepoCard key={repo.id} repo={repo} />
+              <RepoCard key={repo.id} repo={repo} isLowPerf={isLowPerf} />
             ))}
           </motion.div>
         )}
       </AnimatePresence>
-      <motion.div {...fadeIn} className="mt-16 text-center">
+      <motion.div
+        {...fadeIn(isLowPerf)}
+        viewport={{ once: true }}
+        className="mt-16 text-center"
+      >
         <motion.a
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           href="https://github.com/gabrielborgesweb"
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-secondary text-text"
+          className="btn-secondary text-text w-fit m-auto"
         >
           Ver tudo no GitHub
         </motion.a>

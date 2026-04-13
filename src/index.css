@@ -49,6 +49,7 @@
   animation: none !important;
   filter: none !important;
   backdrop-filter: none !important;
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70% !important;
 }
 
 .low-perf .glass {
@@ -62,11 +63,11 @@
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-secondary to-accent text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center transition-all hover:scale-105 dark:hover:shadow-[0_10px_20px_rgba(0,210,255,0.3)];
+    @apply bg-gradient-to-r from-secondary to-accent text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center dark:hover:shadow-[0_10px_20px_rgba(0,210,255,0.3)];
   }
 
   .btn-secondary {
-    @apply border border-glass-border bg-glass text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center transition-all hover:bg-white/10;
+    @apply border border-glass-border bg-glass text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center hover:bg-white/10;
   }
 
   .highlight {
@@ -82,19 +83,15 @@
 }
 
 @keyframes morph {
-  0% {
+  from {
     border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
   }
-  50% {
+  to {
     border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
-  }
-  100% {
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
   }
 }
 
 .animate-morph {
-  animation: morph 8s ease-in-out infinite;
+  animation: morph 8s ease-in-out infinite alternate;
   will-change: border-radius;
-  transform: translateZ(0);
 }

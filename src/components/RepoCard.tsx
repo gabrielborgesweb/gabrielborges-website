@@ -13,17 +13,16 @@ interface Repo {
   fork: boolean;
 }
 
-const fadeIn = {
-  initial: { opacity: 0, y: 15 },
+const fadeIn = (isLowPerf: boolean) => ({
+  initial: isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-50px" },
-  transition: { duration: 0.5, ease: "easeOut" },
-};
+  transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
+});
 
-const RepoCard = React.memo(({ repo }: { repo: Repo }) => (
+const RepoCard = React.memo(({ repo, isLowPerf }: { repo: Repo; isLowPerf: boolean }) => (
   <motion.div
-    variants={fadeIn}
-    whileHover={{ y: -5 }}
+    variants={fadeIn(isLowPerf)}
+    whileHover={isLowPerf ? {} : { y: -5, transition: { duration: 0.2 } }}
     className="glass p-8 flex flex-col hover:shadow-xl dark:hover:shadow-accent/5 transition-shadow"
   >
     <div className="flex justify-between items-start mb-6">
