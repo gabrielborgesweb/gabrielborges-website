@@ -44,7 +44,7 @@ const Logo = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      fill="#fff"
+      fill="currentColor"
       d="m58 188.6q-17.1 0-30.1-7.3-12.9-7.3-20.1-20.8-7.3-13.4-7.3-31.9 0-19.4 7.7-32.9 7.8-13.5 20.8-20.5 13-7.1 28.8-7.1 10.4 0 19.3 3 9 2.9 15.9 8.3 7 5.5 11.1 12.9 4.3 7.3 5.2 16.1h-32.1q-0.7-3-2.3-5.3-1.6-2.4-4.1-4-2.3-1.6-5.5-2.4-3-0.9-6.8-0.9-8 0-13.7 3.9-5.6 3.7-8.6 11-2.9 7.2-2.9 17.4 0 10.3 2.8 17.6 2.8 7.4 8.4 11.3 5.5 3.9 13.8 3.9 7.3 0 12.1-2.2 4.8-2.1 7.2-6 2.5-3.9 2.5-9.2l5.5 0.7h-26.8v-22.7h52v16.2q0 16.1-6.8 27.5-6.8 11.3-18.8 17.4-11.8 6-27.2 6zm113.8-1.6h-55.2v-117.3h50.8q13.4 0 22.6 3.6 9.1 3.6 13.7 10.2 4.7 6.6 4.7 15.5 0 6.4-2.9 11.8-2.8 5.3-7.9 8.9-5 3.6-11.9 4.9v1.3q7.6 0.2 13.7 3.8 6.2 3.4 9.8 9.7 3.8 6.1 3.8 14.4 0 9.6-5 17.1-5 7.5-14.2 11.8-9.2 4.3-22 4.3zm-23.4-50.2v24.8h14.9q8 0 12-3 4.1-3.1 4.1-8.9 0-4.2-1.9-7-1.9-3-5.4-4.4-3.5-1.5-8.3-1.5zm0-42.1v22.4h13.1q4.2 0 7.3-1.3 3.2-1.3 5-3.8 1.9-2.5 1.9-6.1 0-5.4-4-8.3-3.8-2.9-9.7-2.9z"
     />
     <path
@@ -165,7 +165,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
           Removed blurred animating divs which cause heavy layout/paint cycles.
           Using a simpler, high-performance background.
       */}
-      <div className="fixed inset-0 pointer-events-none -z-10 bg-[#050505]">
+      <div className="fixed inset-0 pointer-events-none -z-10 bg-bg">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
       </div>
@@ -212,7 +212,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
               Olá, eu sou <br />
               <span className="highlight leading-tight">Gabriel Borges</span>.
             </h1>
-            <p className="text-xl text-white/70 mb-10 max-w-2xl text-pretty">
+            <p className="text-xl text-text/70 mb-10 max-w-2xl text-pretty">
               Desenvolvedor Full-Stack | Desenvolvedor de Games | Entusiasta de
               Tecnologia. Criando experiências digitais rápidas, acessíveis e
               imersivas.
@@ -269,7 +269,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
       <motion.section {...fadeIn} id="about" className="py-24 container">
         <h2 className="text-4xl font-black mb-12 text-center">Sobre Mim</h2>
         <div className="grid md:grid-cols-5 gap-12 items-center">
-          <div className="md:col-span-3 text-lg text-white/80 space-y-6 text-pretty">
+          <div className="md:col-span-3 text-lg text-text/80 space-y-6 text-pretty">
             <p>
               Sou um desenvolvedor brasileiro de 24 anos apaixonado por criar
               aplicações web modernas e experiências imersivas em jogos.
@@ -288,7 +288,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
                 <Gamepad2 size={24} /> <span>Game Dev</span>
               </div>
               <div className="flex items-center gap-2 text-accent">
-                <Cpu size={24} /> <span>Software Engine</span>
+                <Cpu size={24} /> <span>Software Engineer</span>
               </div>
             </div>
           </div>
@@ -323,7 +323,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-center py-20 text-white/50 italic"
+              className="text-center py-20 text-text/50 italic"
             >
               Carregando projetos recentes...
             </motion.div>
@@ -348,7 +348,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
             whileTap={{ scale: 0.98 }}
             href="https://github.com/gabrielborgesweb"
             target="_blank"
-            className="btn-secondary"
+            className="btn-secondary text-text"
           >
             Ver tudo no GitHub
           </motion.a>
@@ -362,7 +362,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
         className="py-24 container text-center"
       >
         <h2 className="text-4xl font-black mb-6">Vamos nos Conectar</h2>
-        <p className="text-white/70 mb-12 max-w-xl mx-auto text-pretty">
+        <p className="text-text/70 mb-12 max-w-xl mx-auto text-pretty">
           Sinta-se à vontade para entrar em contato para colaborações ou apenas
           um papo amigável!
         </p>
@@ -394,7 +394,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
         </div>
       </motion.section>
 
-      <footer className="py-12 border-t border-glass-border text-center text-white/40 text-sm">
+      <footer className="py-12 border-t border-glass-border text-center text-text/40 text-sm">
         <div className="container flex flex-col gap-2">
           <p>&copy; {new Date().getFullYear()} Gabriel Borges</p>
           <p>Criado com React, Tailwind v4 & Lucide.</p>
@@ -408,7 +408,7 @@ const RepoCard = React.memo(({ repo }: { repo: Repo }) => (
   <motion.div
     variants={fadeIn}
     whileHover={{ y: -5 }}
-    className="glass p-8 flex flex-col transition-shadow hover:shadow-accent/5"
+    className="glass p-8 flex flex-col hover:shadow-xl dark:hover:shadow-accent/5 transition-shadow"
   >
     <div className="flex justify-between items-start mb-6">
       <Folder className="text-accent" size={32} />
@@ -434,10 +434,10 @@ const RepoCard = React.memo(({ repo }: { repo: Repo }) => (
       </div>
     </div>
     <h3 className="text-xl font-bold mb-3">{repo.name}</h3>
-    <p className="text-white/60 text-sm mb-6 flex-grow text-pretty">
+    <p className="text-text/60 text-sm mb-6 flex-grow text-pretty">
       {repo.description || "Sem descrição disponível para este projeto."}
     </p>
-    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/40">
+    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-text/40">
       <span className="flex items-center gap-1">
         <div className="w-2 h-2 rounded-full bg-accent" />
         {repo.language}

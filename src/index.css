@@ -1,15 +1,31 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #050505;
+  --color-bg: var(--bg);
+  --color-text: var(--text);
   --color-accent: #00d2ff;
   --color-secondary: #3a7bd5;
-  --color-glass: rgba(255, 255, 255, 0.05);
-  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --color-glass: var(--glass);
+  --color-glass-border: var(--glass-border);
 
   --font-inter: "Inter", sans-serif;
-
   --spacing-container: 1000px;
+}
+
+:root {
+  --bg: #ffffff;
+  --text: #0a0a0a;
+  --glass: rgba(0, 0, 0, 0.05);
+  --glass-border: rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #050505;
+    --text: #ffffff;
+    --glass: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
 }
 
 @layer base {
@@ -17,15 +33,8 @@
     scroll-behavior: smooth;
   }
 
-  /* Optimize for users who prefer reduced motion or have slower hardware */
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto !important;
-    }
-  }
-
   body {
-    @apply bg-bg text-white font-inter overflow-x-hidden;
+    @apply bg-bg text-text font-inter overflow-x-hidden transition-colors duration-300;
   }
 
   .container {
@@ -49,11 +58,11 @@
 
 @layer components {
   .glass {
-    @apply bg-glass backdrop-blur-md border border-glass-border rounded-2xl shadow-2xl;
+    @apply bg-glass backdrop-blur-md border border-glass-border rounded-2xl transition-shadow duration-300 shadow-none dark:shadow-2xl;
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-secondary to-accent text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center transition-all hover:scale-105 hover:shadow-[0_10px_20px_rgba(0,210,255,0.3)];
+    @apply bg-gradient-to-r from-secondary to-accent text-white h-12 px-8 rounded-lg font-semibold flex items-center justify-center transition-all hover:scale-105 dark:hover:shadow-[0_10px_20px_rgba(0,210,255,0.3)];
   }
 
   .btn-secondary {
