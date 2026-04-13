@@ -1,16 +1,17 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import {
   Github,
   Linkedin,
-  ExternalLink,
   Code2,
   Gamepad2,
   Cpu,
-  Folder,
-  Star,
   ChevronRight,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+
+// Lazy loading components for off-screen sections
+const Projects = lazy(() => import("./components/Projects"));
+const Contact = lazy(() => import("./components/Contact"));
 
 interface Repo {
   id: number;
@@ -23,17 +24,11 @@ interface Repo {
   fork: boolean;
 }
 
-// Optimization: Pre-define animation variants outside component to prevent recreation on re-render
 const fadeIn = {
-  initial: { opacity: 0, y: 15 }, // Reduced y translation for smoother feel
+  initial: { opacity: 0, y: 15 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-50px" },
   transition: { duration: 0.5, ease: "easeOut" },
-};
-
-const staggerContainer = {
-  initial: {},
-  whileInView: { transition: { staggerChildren: 0.05 } }, // Faster stagger for better responsiveness
 };
 
 const Logo = () => (
@@ -86,12 +81,11 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
       if (time - startTime >= 1000) {
         const fps = Math.round((frameCount * 1000) / (time - startTime));
 
-        // If FPS is consistently low (< 40) for 3 checks
         if (fps < 40) {
           lowFpsCount++;
           if (lowFpsCount >= 3) {
             setIsLowPerf(true);
-            return; // Stop monitoring once triggered
+            return;
           }
         } else {
           lowFpsCount = 0;
@@ -108,7 +102,6 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
   }, []);
 
   useEffect(() => {
-    // Só faz o fetch se não tivermos repositórios iniciais (SSG)
     if (repos.length > 0) {
       setLoading(false);
       return;
@@ -140,7 +133,6 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
     };
   }, [repos.length]);
 
-  // Performance: Memoize static skills list
   const skills = useMemo(
     () => [
       "TypeScript",
@@ -160,17 +152,11 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
     <div
       className={`min-h-screen relative selection:bg-accent selection:text-bg ${isLowPerf ? "low-perf" : ""}`}
     >
-      {/* 
-          Performance Optimization: Static Background
-          Removed blurred animating divs which cause heavy layout/paint cycles.
-          Using a simpler, high-performance background.
-      */}
       <div className="fixed inset-0 pointer-events-none -z-10 bg-bg">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
       </div>
 
-      {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 border-b border-glass-border backdrop-blur-md">
         <div className="container flex justify-between items-center py-4">
           <motion.a
@@ -199,7 +185,6 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
         </div>
       </nav>
 
-      {/* Hero */}
       <header className="pt-48 pb-24 container overflow-hidden">
         <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-12">
           <motion.div
@@ -213,8 +198,15 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
               <span className="highlight leading-tight">Gabriel Borges</span>.
             </h1>
             <div className="flex flex-wrap gap-2 mb-6 justify-center md:justify-start">
-              {["Desenvolvedor Full-Stack", "Desenvolvedor de Games", "Entusiasta de Tecnologia"].map((tag) => (
-                <span key={tag} className="px-3 py-1 bg-accent/10 border border-accent/20 text-accent rounded-full text-sm font-semibold">
+              {[
+                "Desenvolvedor Full-Stack",
+                "Desenvolvedor de Games",
+                "Entusiasta de Tecnologia",
+              ].map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 bg-accent/10 border border-accent/20 text-accent rounded-full text-sm font-semibold"
+                >
                   {tag}
                 </span>
               ))}
@@ -236,6 +228,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
                   whileHover={{ y: -3 }}
                   href="https://github.com/gabrielborgesweb"
                   target="_blank"
+                  rel="noopener noreferrer"
                   aria-label="GitHub de Gabriel Borges"
                   className="w-12 h-12 flex items-center justify-center glass transition-all rounded-lg"
                 >
@@ -245,6 +238,7 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
                   whileHover={{ y: -3 }}
                   href="https://www.linkedin.com/in/gabrielborges-sc/"
                   target="_blank"
+                  rel="noopener noreferrer"
                   aria-label="LinkedIn de Gabriel Borges"
                   className="w-12 h-12 flex items-center justify-center glass transition-all rounded-lg"
                 >
@@ -270,7 +264,6 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
         </div>
       </header>
 
-      {/* About */}
       <motion.section {...fadeIn} id="about" className="py-24 container">
         <h2 className="text-4xl font-black mb-12 text-center">Sobre Mim</h2>
         <div className="grid md:grid-cols-5 gap-12 items-center">
@@ -313,91 +306,16 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
         </div>
       </motion.section>
 
-      {/* Projects */}
-      <section id="projects" className="py-24 container">
-        <motion.h2
-          {...fadeIn}
-          className="text-4xl font-black mb-12 text-center"
-        >
-          Projetos
-        </motion.h2>
-        <AnimatePresence mode="wait" initial={!initialRepos}>
-          {loading ? (
-            <motion.div
-              key="loader"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-center py-20 text-text/50 italic"
-            >
-              Carregando projetos recentes...
-            </motion.div>
-          ) : (
-            <motion.div
-              key="grid"
-              variants={staggerContainer}
-              initial="initial"
-              whileInView="whileInView"
-              viewport={{ once: true }}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {repos.map((repo) => (
-                <RepoCard key={repo.id} repo={repo} />
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <motion.div {...fadeIn} className="mt-16 text-center">
-          <motion.a
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            href="https://github.com/gabrielborgesweb"
-            target="_blank"
-            className="btn-secondary text-text"
-          >
-            Ver tudo no GitHub
-          </motion.a>
-        </motion.div>
-      </section>
-
-      {/* Contact */}
-      <motion.section
-        {...fadeIn}
-        id="contact"
-        className="py-24 container text-center"
+      <Suspense
+        fallback={
+          <div className="py-24 text-center text-text/50">
+            Carregando seção...
+          </div>
+        }
       >
-        <h2 className="text-4xl font-black mb-6">Vamos nos Conectar</h2>
-        <p className="text-text/70 mb-12 max-w-md mx-auto text-pretty">
-          Sinta-se à vontade para entrar em contato para colaborações ou apenas
-          um papo amigável!
-        </p>
-        <div className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
-          <motion.a
-            whileHover={{
-              y: -5,
-              backgroundColor: "rgba(255,255,255,0.08)",
-            }}
-            href="https://github.com/gabrielborgesweb"
-            target="_blank"
-            className="glass p-8 flex flex-col items-center gap-4 transition-colors"
-          >
-            <Github size={32} className="text-accent" />
-            <span className="font-bold">GitHub</span>
-          </motion.a>
-          <motion.a
-            whileHover={{
-              y: -5,
-              backgroundColor: "rgba(255,255,255,0.08)",
-            }}
-            href="https://www.linkedin.com/in/gabrielborges-sc/"
-            target="_blank"
-            className="glass p-8 flex flex-col items-center gap-4 transition-colors"
-          >
-            <Linkedin size={32} className="text-accent" />
-            <span className="font-bold">LinkedIn</span>
-          </motion.a>
-        </div>
-      </motion.section>
+        <Projects repos={repos} loading={loading} initialRepos={initialRepos} />
+        <Contact />
+      </Suspense>
 
       <footer className="py-12 border-t border-glass-border text-center text-text/40 text-sm">
         <div className="container flex flex-col gap-2">
@@ -409,48 +327,4 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
   );
 };
 
-const RepoCard = React.memo(({ repo }: { repo: Repo }) => (
-  <motion.div
-    variants={fadeIn}
-    whileHover={{ y: -5 }}
-    className="glass p-8 flex flex-col hover:shadow-xl dark:hover:shadow-accent/5 transition-shadow"
-  >
-    <div className="flex justify-between items-start mb-6">
-      <Folder className="text-accent" size={32} />
-      <div className="flex gap-4">
-        <a
-          href={repo.html_url}
-          target="_blank"
-          aria-label="Código Fonte"
-          className="hover:text-accent transition-colors"
-        >
-          <Github size={20} />
-        </a>
-        {repo.homepage && (
-          <a
-            href={repo.homepage}
-            target="_blank"
-            aria-label="Demo ao Vivo"
-            className="hover:text-accent transition-colors"
-          >
-            <ExternalLink size={20} />
-          </a>
-        )}
-      </div>
-    </div>
-    <h3 className="text-xl font-bold mb-3">{repo.name}</h3>
-    <p className="text-text/60 text-sm mb-6 flex-grow text-pretty">
-      {repo.description || "Sem descrição disponível para este projeto."}
-    </p>
-    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-text/40">
-      <span className="flex items-center gap-1">
-        <div className="w-2 h-2 rounded-full bg-accent" />
-        {repo.language}
-      </span>
-      <span className="flex items-center gap-1">
-        <Star size={14} /> {repo.stargazers_count}
-      </span>
-    </div>
-  </motion.div>
-));
 export default App;
