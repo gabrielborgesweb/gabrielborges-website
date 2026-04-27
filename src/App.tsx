@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, lazy, Suspense } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Github,
   Linkedin,
@@ -7,15 +7,15 @@ import {
   Cpu,
   ChevronRight,
   ChevronDown,
+  ExternalLink,
+  Download,
 } from "lucide-react";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import SiteMenu from "./components/SiteMenu";
+import Projects from "./components/Projects";
+import Contact from "./components/Contact";
 
-// Lazy loading components for off-screen sections
-const Projects = lazy(() => import("./components/Projects"));
-const Contact = lazy(() => import("./components/Contact"));
-
-interface Repo {
+export interface Repo {
   id: number;
   name: string;
   description: string;
@@ -24,6 +24,15 @@ interface Repo {
   stargazers_count: number;
   language: string;
   fork: boolean;
+}
+
+interface GitHubAsset {
+  name: string;
+  browser_download_url: string;
+}
+
+interface GitHubRelease {
+  assets: GitHubAsset[];
 }
 
 export const Logo = () => (
@@ -44,6 +53,115 @@ export const Logo = () => (
   </svg>
 );
 
+const ForgeBanner = ({ isLowPerf }: { isLowPerf: boolean }) => {
+  const [downloadUrl, setDownloadUrl] = useState(
+    "https://github.com/gabrielborgesweb/opencreate-forge/releases/latest",
+  );
+  const [platform, setPlatform] = useState("");
+
+  useEffect(() => {
+    const detectPlatform = () => {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      if (userAgent.indexOf("win") !== -1) return "Windows";
+      if (userAgent.indexOf("mac") !== -1) return "macOS";
+      if (userAgent.indexOf("linux") !== -1) return "Linux";
+      return "";
+    };
+
+    const currentPlatform = detectPlatform();
+    setPlatform(currentPlatform);
+
+    fetch(
+      "https://api.github.com/repos/gabrielborgesweb/opencreate-forge/releases/latest",
+    )
+      .then((res) => res.json())
+      .then((data: GitHubRelease) => {
+        if (data.assets) {
+          let asset;
+          if (currentPlatform === "Windows") {
+            asset = data.assets.find(
+              (a: GitHubAsset) =>
+                a.name.endsWith(".exe") && !a.name.includes("Setup"),
+            );
+            if (!asset)
+              asset = data.assets.find((a: GitHubAsset) =>
+                a.name.endsWith(".exe"),
+              );
+          } else if (currentPlatform === "macOS") {
+            asset = data.assets.find((a: GitHubAsset) =>
+              a.name.endsWith(".dmg"),
+            );
+          } else if (currentPlatform === "Linux") {
+            asset = data.assets.find((a: GitHubAsset) =>
+              a.name.endsWith(".AppImage"),
+            );
+          }
+          if (asset) {
+            setDownloadUrl(asset.browser_download_url);
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  return (
+    <m.div
+      initial={isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4 }}
+      className="glass p-6 md:p-10 mb-12 border-forge/30 relative overflow-hidden group hover:border-forge/50 transition-colors duration-500"
+    >
+      <div className="absolute top-0 right-0 w-64 h-64 bg-forge/10 rounded-full blur-[80px] -mr-32 -mt-32 transition-colors duration-500 group-hover:bg-forge/20" />
+      <div className="relative flex flex-col md:flex-row items-center gap-8">
+        <div className="w-24 h-24 md:w-32 md:h-32 flex-shrink-0 bg-forge rounded-4xl p-6 flex items-center justify-center">
+          <svg
+            viewBox="0 0 512 512"
+            className="w-full h-full text-text"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="m136.5 204.8h71.7c-2.2 11-3.4 22.4-3.4 34.1 0 26.2 5.9 50.9 16.3 73.1-23.2 18.4-52.6 29.3-84.6 29.3v170.7c-75.4 0-136.5-61.1-136.5-136.5v-239c0-75.4 61.1-136.5 136.5-136.5h227.6c0 26.1-7.3 50.4-20 71.1-42.7 7.9-79.7 31.7-104.9 64.9q-5.8 0.5-11.6 0.5h-91.1zm239 307.2h-136.6l45.5-136.5h91.1c-75.5 0-136.6-61-136.6-136.5 0-75.5 61.1-136.6 136.6-136.6 26.9 0 51.9 7.8 73.1 21.2l63.4-21.2v273.1c0 75.4-61.1 136.5-136.5 136.5zm34.1-273c0-18.9-15.3-34.2-34.1-34.2-18.9 0-34.2 15.3-34.2 34.2 0 18.8 15.3 34.1 34.2 34.1 18.8 0 34.1-15.3 34.1-34.1z" />
+          </svg>
+        </div>
+        <div className="flex-grow text-center md:text-left">
+          <div className="flex items-center gap-3 mb-2 justify-center md:justify-start">
+            <h3 className="text-2xl md:text-3xl font-black">
+              OpenCreate Forge
+            </h3>
+          </div>
+          <p className="text-text/70 text-lg mb-6 max-w-2xl text-pretty">
+            Software de manipulação de imagens moderno, open-source e de alta
+            performance. Criado para fluxos de trabalho criativos profissionais.
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+            <m.a
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              href={downloadUrl}
+              className="px-6 py-2 bg-forge text-background font-bold rounded-lg flex items-center gap-2 hover:brightness-110"
+            >
+              <Download size={18} />
+              <span>Baixar{platform ? ` para ${platform}` : ""}</span>
+            </m.a>
+            <m.a
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              href="https://github.com/gabrielborgesweb/opencreate-forge"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-2 bg-white/5 hover:bg-white/10 text-text rounded-lg flex items-center gap-2 border border-white/10"
+            >
+              <span>Saber Mais</span>
+              <ExternalLink size={18} />
+            </m.a>
+          </div>
+        </div>
+      </div>
+    </m.div>
+  );
+};
+
 interface AppProps {
   initialRepos?: Repo[];
 }
@@ -55,12 +173,13 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    // 1. Initial Hardware Check
+    // 1. Initial Hardware & Browser Check
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     const memory =
       (navigator as Navigator & { deviceMemory?: number }).deviceMemory || 8;
     const cpuCores = navigator.hardwareConcurrency || 4;
 
-    if (memory < 4 || cpuCores < 4) {
+    if (memory < 4 || cpuCores < 4 || (isSafari && cpuCores < 8)) {
       setIsLowPerf(true);
       return;
     }
@@ -77,14 +196,14 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
       if (time - startTime >= 1000) {
         const fps = Math.round((frameCount * 1000) / (time - startTime));
 
-        if (fps < 40) {
+        if (fps < 45) {
           lowFpsCount++;
           if (lowFpsCount >= 3) {
             setIsLowPerf(true);
             return;
           }
         } else {
-          lowFpsCount = 0;
+          lowFpsCount = Math.max(0, lowFpsCount - 1);
         }
 
         frameCount = 0;
@@ -148,9 +267,9 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
       <div
         className={`min-h-screen relative selection:bg-accent selection:text-bg ${isLowPerf ? "low-perf" : ""}`}
       >
-        <div className="fixed inset-0 pointer-events-none -z-10 bg-bg">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px]" />
+        <div className="fixed inset-0 pointer-events-none -z-10 bg-bg overflow-hidden">
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-secondary/10 rounded-full blur-[80px] md:blur-[100px]" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[80px] md:blur-[100px]" />
         </div>
 
         <nav
@@ -266,6 +385,17 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-20px" }}
           transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+          id="about-forge"
+          className="py-12 container"
+        >
+          <ForgeBanner isLowPerf={isLowPerf} />
+        </m.section>
+
+        <m.section
+          initial={isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-20px" }}
+          transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
           id="about"
           className="py-24 container"
         >
@@ -312,21 +442,13 @@ const App: React.FC<AppProps> = ({ initialRepos }) => {
           </div>
         </m.section>
 
-        <Suspense
-          fallback={
-            <div className="py-24 text-center text-text/50">
-              Carregando seção...
-            </div>
-          }
-        >
-          <Projects
-            repos={repos}
-            loading={loading}
-            initialRepos={initialRepos}
-            isLowPerf={isLowPerf}
-          />
-          <Contact isLowPerf={isLowPerf} />
-        </Suspense>
+        <Projects
+          repos={repos}
+          loading={loading}
+          initialRepos={initialRepos}
+          isLowPerf={isLowPerf}
+        />
+        <Contact isLowPerf={isLowPerf} />
 
         <footer className="py-12 border-t border-glass-border text-center text-text/40 text-sm">
           <div className="container flex flex-col gap-2">

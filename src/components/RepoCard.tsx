@@ -72,9 +72,11 @@ const RepoCard = React.memo(
           <div className="w-2 h-2 rounded-full bg-accent" />
           {repo.language}
         </span>
-        <span className="flex items-center gap-1">
-          <Star size={14} /> {repo.stargazers_count}
-        </span>
+        {repo.stargazers_count > 0 && (
+          <span className="flex items-center gap-1">
+            <Star size={14} /> {repo.stargazers_count}
+          </span>
+        )}
       </div>
     </m.div>
   ),

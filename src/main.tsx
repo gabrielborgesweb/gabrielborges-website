@@ -1,10 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import App, { Repo } from "./App";
 import "./index.css";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+// Read initial data injected during prerender
+const initialRepos = (
+  window as unknown as { __INITIAL_DATA__: Repo[] | undefined }
+).__INITIAL_DATA__;
+
+ReactDOM.hydrateRoot(
+  document.getElementById("root")!,
   <React.StrictMode>
-    <App />
+    <App initialRepos={initialRepos} />
   </React.StrictMode>,
 );

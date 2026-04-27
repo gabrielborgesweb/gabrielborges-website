@@ -44,7 +44,7 @@ const Projects: React.FC<ProjectsProps> = ({
   isLowPerf,
 }) => {
   return (
-    <section id="projects" className="py-24 container">
+    <section id="projects" className="py-8 container">
       <m.h2
         initial={isLowPerf ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -54,6 +54,7 @@ const Projects: React.FC<ProjectsProps> = ({
       >
         Projetos
       </m.h2>
+
       <AnimatePresence mode="wait" initial={!initialRepos}>
         {loading ? (
           <m.div

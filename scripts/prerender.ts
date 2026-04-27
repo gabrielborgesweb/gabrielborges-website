@@ -75,6 +75,7 @@ async function prerender() {
   const finalHtml = 
     template.substring(0, startIndex) + 
     `<div id="root">${appHtml}</div>` + 
+    `<script>window.__INITIAL_DATA__ = ${JSON.stringify(initialRepos)}</script>` +
     template.substring(endIndex + 6); // 6 é o tamanho de '</div>'
 
   fs.writeFileSync(templatePath, finalHtml);
