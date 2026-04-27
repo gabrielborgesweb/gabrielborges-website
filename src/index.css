@@ -46,12 +46,17 @@
 
 /* Fallback for low performance devices */
 .low-perf .blob,
-.low-perf .animate-morph,
-.low-perf .highlight {
+.low-perf .animate-morph {
   animation: none !important;
   filter: none !important;
   backdrop-filter: none !important;
   border-radius: 30% 70% 70% 30% / 30% 30% 70% 70% !important;
+}
+
+.low-perf .highlight {
+  animation: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
 }
 
 .low-perf .glass {
