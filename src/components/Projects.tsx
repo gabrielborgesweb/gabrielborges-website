@@ -95,7 +95,7 @@ const Projects: React.FC<ProjectsProps> = ({
           className="btn-secondary text-text w-fit m-auto gap-2"
         >
           <span>Ver tudo no GitHub</span>
-          <ExternalLink size={20} />
+          <ExternalLink size={16} />
         </m.a>
       </m.div>
     </section>
